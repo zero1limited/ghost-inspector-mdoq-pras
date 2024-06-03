@@ -1,0 +1,18 @@
+#!/bin/bash -ex
+
+# get mysql creds
+db_host=$(php -r '$env = include "./app/etc/env.php"; echo $env["db"]["connection"]["default"]["host"].PHP_EOL;');
+db_database=$(php -r '$env = include "./app/etc/env.php"; echo $env["db"]["connection"]["default"]["dbname"].PHP_EOL;');
+db_username=$(php -r '$env = include "./app/etc/env.php"; echo $env["db"]["connection"]["default"]["username"].PHP_EOL;');
+db_password=$(php -r '$env = include "./app/etc/env.php"; echo $env["db"]["connection"]["default"]["password"].PHP_EOL;');
+
+
+
+# reduce/remove captcha threshold
+mysql -h ${db_host} -u ${db_username} -p${db_password} ${db_database} -e "delete from core_config_data where path = 'recaptcha_frontend/type_recaptcha_v3/score_threshold';"
+php bin/magento config:set -- recaptcha_frontend/type_recaptcha_v3/score_threshold 0
+
+# do some other stuff
+
+
+php bin/magento cache:flush
