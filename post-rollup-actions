@@ -10,6 +10,9 @@ db_password=$(php -r '$env = include "./app/etc/env.php"; echo $env["db"]["conne
 # reduce/remove captcha threshold
 mysql -h ${db_host} -u ${db_username} -p${db_password} ${db_database} -e "delete from core_config_data where path = 'recaptcha_frontend/type_recaptcha_v3/score_threshold';"
 php bin/magento config:set -- recaptcha_frontend/type_recaptcha_v3/score_threshold 0
+php bin/magento config:set -- recaptcha_frontend/type_recaptcha_v3/public_key "6Lf3dMwgAAAAADj1nNGMR8232JBU-0z8NQYLdSBa"
+php bin/magento config:set -- recaptcha_frontend/type_recaptcha_v3/private_key "6Lf3dMwgAAAAAHwqAbn7nrR5jbbbaEZ1A-_X6F_5"
+
 
 # allow account sharing in-case someone uses our generic login when Ghost Inspector is running
 php bin/magento config:set admin/security/admin_account_sharing 1
